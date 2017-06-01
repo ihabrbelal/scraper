@@ -1,4 +1,5 @@
-// 
+// to load when document is ready//
+
 $(document).ready(function() {
 
     var articleContainer = $(".article-container");
@@ -9,41 +10,34 @@ $(document).ready(function() {
     $(document).on("click", ".btn.save", handleNoteSave);
     $(document).on("click", ".btn.note-delete", handleNoteDelete);
 
-
     initPage();
 
     function initPage() {
-
         articleContainer.empty();
         $.get("/api/headlines?saved=true").then(function(data) {
 
             if (data && data.length) {
                 renderArticles(data);
             } else {
-
                 renderEmpty();
             }
         });
     }
 
+
     function renderArticles(articles) {
-
-
         var articlePanels = [];
-
 
         for (var i = 0; i < articles.length; i++) {
             articlePanels.push(createPanel(articles[i]));
         }
 
-
         articleContainer.append(articlePanels);
     }
 
+
+
     function createPanel(article) {
-
-
-
         var panel =
             $(["<div class='panel panel-default'>",
                 "<div class='panel-heading'>",
@@ -61,15 +55,12 @@ $(document).ready(function() {
                 "</div>"
             ].join(""));
 
-
         panel.data("_id", article._id);
-
         return panel;
     }
 
+
     function renderEmpty() {
-
-
         var emptyAlert =
             $(["<div class='alert alert-warning text-center'>",
                 "<h4> no saved Article.<h4>",
@@ -87,9 +78,8 @@ $(document).ready(function() {
         articleContainer.append(emptyAlert);
     }
 
+
     function renderNotesList(data) {
-
-
 
         var notesToRender = [];
         var currentNote;
@@ -102,8 +92,6 @@ $(document).ready(function() {
             ].join("");
             notesToRender.push(currentNote);
         } else {
-
-
             for (var i = 0; i < data.notes.length; i++) {
 
                 currentNote = $([
@@ -122,11 +110,10 @@ $(document).ready(function() {
         $(".note-container").append(notesToRender);
     }
 
+
     function handleArticleDelete() {
 
-
         var articleToDelete = $(this).parents(".panel").delete();
-
         $.ajax({
             method: "DELETE",
             url: "/api/headlines/" + articleToDelete._id
@@ -138,13 +125,12 @@ $(document).ready(function() {
         });
     }
 
-    function handleArticleNotes() {
 
+    function handleArticleNotes() {
 
         var currentArticle = $(this).parents(".panel").data();
 
         $.get("/api/notes/" + currentArticle._id).then(function(data) {
-
             var modalText = [
                 "<div class='container-fluid text-center'>",
                 "<h4> Notes for Article: ",
@@ -166,21 +152,16 @@ $(document).ready(function() {
                 _id: currentArticle._id,
                 notes: data || []
             };
-
-
             $(".btn.save").data("article", noteData);
-
             renderNotesList(noteData);
         });
     }
 
+
     function handleNoteSave() {
-
-
 
         var noteData;
         var newNote = $(".bootbox-body textarea").val().trim();
-
 
         if (newNote) {
             noteData = {
@@ -194,17 +175,14 @@ $(document).ready(function() {
         }
     }
 
+
     function handleNoteDelete() {
 
-
-
         var noteToDelete = $(this).data("_id");
-
         $.ajax({
             url: "/api/notes/" + noteToDelete,
             method: "DELETE"
         }).then(function() {
-
             bootbox.hideAll();
         });
     }

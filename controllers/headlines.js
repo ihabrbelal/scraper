@@ -1,6 +1,5 @@
 var scrape = require("../scripts/scrape");
 var makeDate = require("../scripts/date");
-
 var Headline = require("../models/Headline");
 
 module.exports = {
@@ -16,9 +15,12 @@ module.exports = {
             });
         });
     },
+    // to delete a headline
     delete: function(query, cb) {
         Headline.remove(query, cb);
     },
+
+    // to get a headline
     get: function(query, cb) {
         Headline.find(query)
             .sort({
@@ -28,6 +30,8 @@ module.exports = {
                 cb(doc);
             });
     },
+
+    // to update a headline
     update: function(query, cb) {
         Headline.update({ _id: query._id }, {
             $set: query
