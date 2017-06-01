@@ -22,13 +22,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // connect handlebars to express app
 app.engine("handlebars", expressHandlebars({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
-var
-
+var MONGODB_URI = "mongodb://<dbuser>:<dbpassword>@ds155091.mlab.com:55091/heroku_tc1lwkhz"
 
 var db = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 // setup mongoose
-mongoose.connect("mongodb://heroku_tc1lwkhz:r84r9tnufkf8q6m7tjvh2sn8b9@ds155091.mlab.com:55091/heroku_tc1lwkhz", function(error) {
+mongoose.connect(db, function(error) {
     if (error) {
         console.log(error);
     } else {
